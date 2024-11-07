@@ -57,7 +57,7 @@ public class Colonie {
     public void AddPreferance(String Str){
         //verifier qu'on a N preferance DISTINCTE
         StringTokenizer tokenizer = new StringTokenizer(Str, " ");
-        if(tokenizer.countTokens() == this.colonie.size()){
+        if(tokenizer.countTokens() == this.colonie.size()+1){
             Colon Colon1 = this.colonie.get(SearchColon(tokenizer.nextToken()));
             ArrayList<Integer> col = Colon1.getPreferances();
             int i = 0;
@@ -100,26 +100,25 @@ public class Colonie {
     public void Affectation(){
         //initialisation d'une array de ressources
         ArrayList<Integer> resource = new ArrayList<>();
-        for (int i = 1; i < this.colonie.size(); i++) {
+        for (int i = 1; i <= this.colonie.size(); i++) {
             resource.add(i);
         }
+        System.out.println(resource);
 
         //Attribution du premier disponible
         for (Colon colon : this.colonie) {
-            int x = colon.getPreferances().get(0);
-            if (resource.contains(x)) {
-                this.colonie.get(0).setRessource(x);
-                resource.set(0, 0);
-            } else {
-                for (int j = 1; j < resource.size(); j++) {
-                    if (resource.contains(j)) {
-                        this.colonie.get(j).setRessource(j);
-                        resource.set(j, 0);
+            for (int j = 0; j < colon.getPreferances().size(); j++) {
+                for (int i = 0; i < resource.size(); i++) {
+                    System.out.println(colon.getNom() + " " + resource.get(i)+ " " + colon.getPreferances().get(j));
+                    if ( resource.get(i) == colon.getPreferances().get(j)){
+                        colon.setRessource(resource.get(i));
+                        resource.remove(resource.get(i));
+                        j = colon.getPreferances().size() ;
+                        break;
                     }
                 }
             }
         }
-
     };
 
     // 3 ou 4 algo d'affectation a appller la haut
