@@ -9,7 +9,7 @@ public class Colonie {
 
     public Colonie(int n) {
         this.matriceIncidence = new int[n][n];
-        this.solution = new Solution();
+        //this.solution = new Solution();
         this.colonie = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             this.colonie.add(new Colon ( Character.toString((char) 65+i) ,i));
@@ -80,13 +80,13 @@ public class Colonie {
         this.colonie = colonie;
     }
 
-    public Solution getSolution() {
-        return solution;
-    }
+    //public Solution getSolution() {
+    //    return solution;
+    //}
 
-    public void setSolution(Solution solution) {
-        this.solution = solution;
-    }
+    //public void setSolution(Solution solution) {
+    //    this.solution = solution;
+    //}
 
     public int[][] getMatriceIncidence() {
         return matriceIncidence;
@@ -96,10 +96,33 @@ public class Colonie {
         this.matriceIncidence = matriceIncidence;
     }
 
-    //appelle les algo d'affectation et enregistre le meilleur dans le sol de l'objet
-    public void Affectation(){};
+    //fct qui fait l'algo d'attribution naive
+    public void Affectation(){
+        //initialisation d'une array de ressources
+        ArrayList<Integer> resource = new ArrayList<>();
+        for (int i = 1; i < this.colonie.size(); i++) {
+            resource.add(i);
+        }
+
+        //Attribution du premier disponible
+        for (Colon colon : this.colonie) {
+            int x = colon.getPreferances().get(0);
+            if (resource.contains(x)) {
+                this.colonie.get(0).setRessource(x);
+                resource.set(0, 0);
+            } else {
+                for (int j = 1; j < resource.size(); j++) {
+                    if (resource.contains(j)) {
+                        this.colonie.get(j).setRessource(j);
+                        resource.set(j, 0);
+                    }
+                }
+            }
+        }
+
+    };
 
     // 3 ou 4 algo d'affectation a appller la haut
 
-    public void JalousyRateCalculator(){};
+    //public int JalousyRateCalculator(){};
 }
