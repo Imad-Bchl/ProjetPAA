@@ -4,7 +4,7 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in), scanner = new Scanner(System.in);
         int nColon, choix, nPrefAjouter = 0, resInter, JalousieRate;
         String col1, col2, pref, aff;
         System.out.println("\t **** Bonjour Astronaut **** \n De combien de personnes se constituent votre colonie ?");
@@ -17,6 +17,7 @@ public class Main {
 
         Colonie Mars = new Colonie(nColon);
         System.out.println("Tres bien votre colonie est creer");
+        System.out.println(Mars.getColonie().size());
         do {
             System.out.println("Que voulez faire maintenant, vous pouvez: \n" +
                     " \t 1) Ajouter une relation entre deux colons\n" +
@@ -35,7 +36,7 @@ public class Main {
 
                 case 2:
                     System.out.println("Tapez les preferance de l'un de vos colon sous la forme: NomDuColon Pref1 Pref2 Pref3 .... PrefN" );
-                    pref = sc.next();
+                    pref = scanner.nextLine();
                     Mars.AddPreferance(pref);
                     System.out.println("Preference ajouter avec success");
                     nPrefAjouter++;
@@ -72,14 +73,14 @@ public class Main {
                     System.out.println("le deuxieme colon est:");
                     col2 = sc.next();
                     resInter = Mars.getColonie().get(Mars.SearchColon(col1)).getRessource();
-                    Mars.getColonie().get(Mars.SearchColon(col1)).setRessource(Mars.getColonie().get(Mars.SearchColon(col2)).getRessource());
-                    Mars.getColonie().get(Mars.SearchColon(col2)).setRessource(resInter);
+                    Mars.getColonie().get(Mars.SearchColon(col1)).ModifyRessource(Mars.getColonie().get(Mars.SearchColon(col2)).getRessource());
+                    Mars.getColonie().get(Mars.SearchColon(col2)).ModifyRessource(resInter);
                     System.out.println("Echange fait avec success");
                     break;
 
                 case 2:
                     //JalousieRate = Mars.JalousyRateCalculator();
-                    System.out.println("La solution actuel fait " + JalousieRate + "jaloux");
+                    //System.out.println("La solution actuel fait " + JalousieRate + "jaloux");
                     break;
 
             }
