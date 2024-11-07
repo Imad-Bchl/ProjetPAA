@@ -33,8 +33,15 @@ public class Colon {
     }
 
     public void setRessource(int ressource) {
+        if(this.ressource == 0){
+            this.ressource = ressource;
+        }
+    }
+
+    public void ModifyRessource(int ressource) {
         this.ressource = ressource;
     }
+
     public String getNom() {
         return nom;
     }
