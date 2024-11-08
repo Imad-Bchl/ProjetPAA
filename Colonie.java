@@ -123,5 +123,33 @@ public class Colonie {
 
     // 3 ou 4 algo d'affectation a appller la haut
 
-    //public int JalousyRateCalculator(){};
+   public int JalousyRateCalculator() {
+    int tauxDeJalousie = 0;
+
+    // Parcourir tous les colons
+    for (Colon colon1 : colonie) {
+        int index1 = colon1.getIndex();
+
+        // Parcourir tous les autres colons
+        for (Colon colon2 : colonie) {
+            int index2 = colon2.getIndex();
+
+            // Vérifier s'il y a une relation de "haine" entre colon1 et colon2
+            if (matriceIncidence[index1][index2] == 1 || matriceIncidence[index2][index1] == 1) {
+
+                // Récupérer les préférences de colon1
+                ArrayList<Integer> preferences1 = colon1.getPreferances();
+
+                // Si colon1 préfère la ressource de colon2 à la sienne, il est "jaloux"
+                if (preferences1.indexOf(colon2.getRessource()) < preferences1.indexOf(colon1.getRessource())) {
+                    tauxDeJalousie++;
+                    break;  // Un colon peut être jaloux une seule fois, donc on passe au suivant
+                }
+            }
+        }
+    }
+
+    return tauxDeJalousie;
 }
+
+    }

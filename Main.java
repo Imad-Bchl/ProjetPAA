@@ -4,6 +4,10 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+
+        //Test predifini :
+        PredefinedTest.test();
+
         Scanner sc = new Scanner(System.in), scanner = new Scanner(System.in);
         int nColon, choix, nPrefAjouter = 0, resInter, JalousieRate;
         String col1, col2, pref, aff;
@@ -64,7 +68,7 @@ public class Main {
             System.out.println("Que voulez faire maintenant, vous pouvez: \n" +
                     " \t 1) Echanger les ressources de deux colons\n" +
                     " \t 2) Ajouter le nombre de colons jaloux\n" +
-                    " \t 3) Fin.");
+                    " \t 3) Fin.\n");
             choix = sc.nextInt();
             switch (choix) {
                 case 1:
@@ -79,10 +83,10 @@ public class Main {
                     break;
 
                 case 2:
-                    //JalousieRate = Mars.JalousyRateCalculator();
-                    //System.out.println("La solution actuel fait " + JalousieRate + "jaloux");
+                    JalousieRate = Mars.JalousyRateCalculator();
+                    System.out.println("La solution actuel fait " + JalousieRate + "jaloux");
                     break;
-
+                
             }
         }while (choix < 1 || choix > 2);
 
