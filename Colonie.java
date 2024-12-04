@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -16,7 +19,47 @@ public class Colonie {
         }
     }
 
+    public void lireDepuisFichier(String cheminFichier) throws IOException {
+    BufferedReader reader = new BufferedReader(new FileReader(cheminFichier));
+    String ligne;
 
+    while ((ligne = reader.readLine()) != null) {
+        ligne = ligne.trim();
+
+        if (ligne.startsWith("colon(")) {
+            // Ajouter un colon à la colonie
+            String nomColon = ligne.substring(6, ligne.length() - 1);
+            colonie.add(new Colon(nomColon, colonie.size()));
+        } else if (ligne.startsWith("ressource(")) {
+            // Une ressource est identifiée par son numéro
+            String nomRessource = ligne.substring(10, ligne.length() - 1);
+            int ressource = Integer.parseInt(nomRessource);
+            // Ajouter chaque ressource dans les préférences des colons
+            for (Colon colon : colonie) {
+                colon.getPreferances().add(ressource);
+            }
+        } else if (ligne.startsWith("deteste(")) {
+            // Ajouter une relation de haine
+            String[] noms = ligne.substring(8, ligne.length() - 1).split(",");
+            DefineRelation(noms[0], noms[1]);
+        } else if (ligne.startsWith("preferences(")) {
+            // Ajouter les préférences pour un colon
+            String[] parties = ligne.substring(12, ligne.length() - 1).split(",");
+            String nomColon = parties[0];
+            ArrayList<Integer> preferences = new ArrayList<>();
+            for (int i = 1; i < parties.length; i++) {
+                preferences.add(Integer.parseInt(parties[i]));
+            }
+            Colon colon = colonie.get(SearchColon(nomColon));
+            colon.setPreferances(preferences);
+        }
+    }
+    reader.close();
+
+    // Initialiser la matrice d'incidence
+    matriceIncidence = new int[colonie.size()][colonie.size()];
+}
+    
     // Une fonction qui retourne l'index du clon rechercher par son nom dans la colonie
     public int SearchColon(String colon){
         //il faut verifier que le colon exist
