@@ -1,17 +1,15 @@
+package project;
+
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-
-        //Test predifini :
-        PredefinedTest.test();
-
         Scanner sc = new Scanner(System.in), scanner = new Scanner(System.in);
         int nColon, choix, nPrefAjouter = 0, resInter, JalousieRate;
         String col1, col2, pref, aff;
-        System.out.println("\t **** Bonjour Astronaut **** \n De combien de personnes se constituent votre colonie ?");
+        System.out.println("\t **** Bonjour Astronaut XX **** \n De combien de personnes se constituent votre colonie ?");
         do {
             nColon = sc.nextInt();
             if (nColon < 1 || nColon > 26) {
@@ -41,9 +39,9 @@ public class Main {
                 case 2:
                     System.out.println("Tapez les preferance de l'un de vos colon sous la forme: NomDuColon Pref1 Pref2 Pref3 .... PrefN" );
                     pref = scanner.nextLine();
-                    Mars.AddPreferance(pref);
-                    System.out.println("Preference ajouter avec success");
-                    nPrefAjouter++;
+                    if(Mars.AddPreferance(pref)){
+                        nPrefAjouter++;
+                    };
                     break;
 
                 default:
@@ -67,8 +65,9 @@ public class Main {
         do {
             System.out.println("Que voulez faire maintenant, vous pouvez: \n" +
                     " \t 1) Echanger les ressources de deux colons\n" +
-                    " \t 2) Ajouter le nombre de colons jaloux\n" +
-                    " \t 3) Fin.\n");
+                    " \t 2) Calculer le nombre de colons jaloux\n" +
+                    " \t 3) Afficher les affectations actuelle \n" +
+                    " \t 4)Fin. \n");
             choix = sc.nextInt();
             switch (choix) {
                 case 1:
@@ -76,19 +75,27 @@ public class Main {
                     col1 = sc.next();
                     System.out.println("le deuxieme colon est:");
                     col2 = sc.next();
-                    resInter = Mars.getColonie().get(Mars.SearchColon(col1)).getRessource();
-                    Mars.getColonie().get(Mars.SearchColon(col1)).ModifyRessource(Mars.getColonie().get(Mars.SearchColon(col2)).getRessource());
-                    Mars.getColonie().get(Mars.SearchColon(col2)).ModifyRessource(resInter);
+                    int rescol1 = Mars.getColonie().get(Mars.SearchColon(col1)).getRessource();
+                    int rescol2 = Mars.getColonie().get(Mars.SearchColon(col2)).getRessource();
+                    Mars.getColonie().get(Mars.SearchColon(col1)).ModifyRessource(rescol2);
+                    Mars.getColonie().get(Mars.SearchColon(col2)).ModifyRessource(rescol1);
                     System.out.println("Echange fait avec success");
                     break;
 
                 case 2:
                     JalousieRate = Mars.JalousyRateCalculator();
-                    System.out.println("La solution actuel fait " + JalousieRate + "jaloux");
+                    System.out.println("La solution actuel fait " + JalousieRate + " jaloux");
                     break;
-                
+                case 3:
+                    for (int i = 0; i < Mars.getColonie().size(); i++) {
+                        aff = Mars.getColonie().get(i).getNom() + " " + Mars.getColonie().get(i).getRessource();
+                        System.out.println(aff);
+                    }
+                    break;
+                default:
+                    System.out.println("Bye Astronaut ");
             }
-        }while (choix < 1 || choix > 2);
+        }while (choix > 0 && choix < 5);
 
     }
 }
