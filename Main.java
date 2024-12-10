@@ -1,17 +1,25 @@
-package project;
-
+import javax.imageio.spi.ImageReaderSpi;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+
+    public static void MainWithoutFile(){
         Scanner sc = new Scanner(System.in), scanner = new Scanner(System.in);
-        int nColon, choix, nPrefAjouter = 0, resInter, JalousieRate;
+        int nColon = 0, choix = 0, resInter, JalousieRate;
+        ArrayList<String> PreferanceAdded = new ArrayList<>();
         String col1, col2, pref, aff;
-        System.out.println("\t **** Bonjour Astronaut XX **** \n De combien de personnes se constituent votre colonie ?");
-        do {
-            nColon = sc.nextInt();
+        System.out.println("\t **** Bonjour Astronaut **** \n De combien de personnes se constituent votre colonie ?");
+        do {            do{
+                try{
+                    nColon = sc.nextInt();
+                }catch (Exception e){
+                    System.out.println("Saisie invalide: saisissez une nombre entier de 1 à 4");
+                    sc.next();
+                }
+            }while(nColon == 0);
+
             if (nColon < 1 || nColon > 26) {
                 System.out.println("Le nombre de colon doit etre compris entre 1 et 26");
             }
@@ -19,33 +27,75 @@ public class Main {
 
         Colonie Mars = new Colonie(nColon);
         System.out.println("Tres bien votre colonie est creer");
-        System.out.println(Mars.getColonie().size());
         do {
             System.out.println("Que voulez faire maintenant, vous pouvez: \n" +
                     " \t 1) Ajouter une relation entre deux colons\n" +
                     " \t 2) Ajouter les préférences d’un colon\n" +
                     " \t 3) Fin.");
-            choix = sc.nextInt();
+            do{
+                try{
+                    choix = sc.nextInt();
+                }catch (Exception e){
+                    System.out.println("Saisie invalide: saisissez une nombre entier de 1 à 4");
+                    sc.next();
+                }
+            }while(choix == 0);
+
             switch (choix) {
                 case 1:
                     System.out.println("le premier colon est:");
                     col1 = sc.next();
                     System.out.println("le deuxieme colon est:");
                     col2 = sc.next();
-                    Mars.DefineRelation(col1, col2);
-                    System.out.println("Relation ajouter avec success");
+                    if(Mars.SearchColon(col1) != -1 && Mars.SearchColon(col2) != -1 ) {
+                        Mars.DefineRelation(col1, col2);
+                        System.out.println("Relation ajouter avec success");
+                    }
+                    else{
+                        System.out.println("L'un ou les deux colon n'existe pas dans la colonie");
+                    }
                     break;
 
                 case 2:
                     System.out.println("Tapez les preferance de l'un de vos colon sous la forme: NomDuColon Pref1 Pref2 Pref3 .... PrefN" );
                     pref = scanner.nextLine();
-                    if(Mars.AddPreferance(pref)){
-                        nPrefAjouter++;
-                    };
+                    String[] prefSplitted = pref.split(" ");
+                    if(prefSplitted.length == nColon+1){
+                        if(PreferanceAdded.contains(pref.split(" ")[0])){
+                            System.out.println("Preferance de colon déja ajouter, voulez vous les modifier ? \n" +
+                                    "1- Oui \n" +
+                                    "2- Non \n");
+                            int c = scanner.nextInt();
+                            switch (c){
+                                case 1:
+                                    Mars.AddPreferance(pref);
+                                    System.out.println("Preferance ajouter avec success");
+                                    break;
+                                case 2:
+                                    System.out.println("Preferance non modifier");
+                                    break;
+                                default:
+                                    System.out.println("Saisie Invalide, Preferance non modifier");
+                            }
+                        }
+                        else{
+                            if(Mars.SearchColon(pref.split(" ")[0]) != -1){
+                                Mars.AddPreferance(pref);
+                                System.out.println("Preferance ajouter avec success");
+                                PreferanceAdded.add(pref.split(" ")[0]);
+                            }
+                            else{
+                                System.out.println("Le nom de colon saisie est introuvable, reesayer en respectant la syantaxe indiquer");
+                            }
+                        }
+                    }
+                    else {
+                        System.out.println("Saisie invalide: Veuillez Suivre le format 'NomDuColon Pref1 Pref2 Pref3 .... PrefN' avec autant de preferances que de ressources disponible !");
+                    }
                     break;
 
                 default:
-                    if(nPrefAjouter == nColon){
+                    if(PreferanceAdded.size() == nColon){
                         choix = 77;
                     }
                     else{
@@ -61,14 +111,22 @@ public class Main {
             aff = Mars.getColonie().get(i).getNom() + " " + Mars.getColonie().get(i).getRessource();
             System.out.println(aff);
         }
-
+        choix = 0;
         do {
             System.out.println("Que voulez faire maintenant, vous pouvez: \n" +
                     " \t 1) Echanger les ressources de deux colons\n" +
                     " \t 2) Calculer le nombre de colons jaloux\n" +
                     " \t 3) Afficher les affectations actuelle \n" +
                     " \t 4)Fin. \n");
-            choix = sc.nextInt();
+            do{
+                try{
+                    choix = sc.nextInt();
+                }catch (Exception e){
+                    System.out.println("Saisie invalide: saisissez une nombre entier de 1 à 4");
+                    sc.next();
+                }
+            }while(choix == 0);
+
             switch (choix) {
                 case 1:
                     System.out.println("le premier colon est:");
@@ -96,6 +154,73 @@ public class Main {
                     System.out.println("Bye Astronaut ");
             }
         }while (choix > 0 && choix < 5);
+    }
+
+
+
+    public static void MainWithFile(String path){
+        Colonie Mars = new Colonie(path);
+        System.out.println(" \t\t ****** Bonjour Astraunote ***** \n Votre colonie est creer Avec success");
+        Boolean resolu = false;
+        Scanner sc = new Scanner(System.in);
+        int choix = 0;
+        System.out.println("Que souhaitez vous faure ? , vous pouvez: \n" +
+                " \t 1) Resolution automatique du problème \n" +
+                " \t 2) Sauvgarder la solution dans un fichier\n" +
+                " \t 3) Voir le taux de jalousie" +
+                " \t 4) Fin.");
+        do{
+            try{
+                choix = sc.nextInt();
+            }catch (Exception e){
+                System.out.println("Saisie invalide: saisissez une nombre entier de 1 à 4");
+                sc.next();
+            }
+        }while(choix == 0);
+
+        switch (choix) {
+            case 1:
+                //reolution auto algo
+                resolu = true;
+                break;
+            case 2:
+                if(resolu){
+                    System.out.println("ou souhaiter vous enregistrer la solution ?");
+                    String pathSolution = sc.nextLine();
+                    Mars.EnregistrerSolutionFile(pathSolution);
+                    System.out.println("Solution enregistrer avec success dans le fichier Solution.txt");
+                }else{
+                    System.out.println("Vous n'avez pas encore lancer la résolution automatique");
+                }
+                break;
+            case 3:
+                if(resolu){
+                    System.out.println("Le taux de jalousie de la solution est: " + Mars.JalousyRateCalculator());
+                }else{
+                    System.out.println("Vous n'avez pas encore lancer la résolution automatique");
+                }
+                break;
+            default:
+                System.out.println("Heureux de vous avoir rencontrer Astraunote, A une rochaine fois! ");
+                choix = 77;
+        }while (choix != 77);
+    }
+
+
+
+
+    public static void main(String[] args) {
+        if(args.length == 0){
+            MainWithoutFile();
+        }
+        else{
+            if(args.length == 1){
+                MainWithFile(args[0]);
+            }else{
+                throw new InputNonValideException("Input Invalide: veuillez saisir un chemin valide vers le fichier");
+            }
+        }
 
     }
+
 }
