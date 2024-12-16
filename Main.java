@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -5,6 +7,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        if(args.length == 0){
         //Test predifini :
         PredefinedTest.test();
 
@@ -91,4 +94,85 @@ public class Main {
         }while (choix < 1 || choix > 2);
 
     }
+    else{
+        File file = new File(args[0]);
+            if (file.exists()) {
+                // Créer la colonie à partir du fichier
+                try {
+                    Colonie colonie = new Colonie(3);  // 5 est un exemple, à adapter selon le fichier
+                    colonie.lireFichier(file);
+                    colonie.validerFichier(file.getAbsolutePath());
+                    afficherMenu(colonie);
+                } catch (FileNotFoundException e) {
+                    System.out.println("Le fichier spécifié n'existe pas.");
+                } catch (Exception e) {
+                     e.printStackTrace();
+                }
+            } else {
+                System.out.println("Le fichier " + args[0] + " est introuvable.");
+            }
+        }
+    }
+
+    // Fonction pour lancer le menu et interagir avec l'utilisateur
+    private static void afficherMenu(Colonie colonie) {
+        Scanner scanner = new Scanner(System.in);
+        boolean quitter = false;
+
+        while (!quitter) {
+            System.out.println("\nChoisissez une option:");
+            System.out.println("1) Échanger les ressources de deux colons");
+            System.out.println("2) Afficher le nombre de colons jaloux");
+            System.out.println("3) Fin");
+            
+            int choix = scanner.nextInt();
+            scanner.nextLine(); // Consommer le retour à la ligne
+
+            switch (choix) {
+                case 1:
+                    // Échanger les ressources entre deux colons
+                    System.out.print("Nom du premier colon : ");
+                    String colon1 = scanner.nextLine();
+                    System.out.print("Nom du deuxième colon : ");
+                    String colon2 = scanner.nextLine();
+                    echangerRessources(colonie, colon1, colon2);
+                    break;
+                case 2:
+                    // Afficher le nombre de colons jaloux
+                    int jalousie = colonie.JalousyRateCalculator();
+                    System.out.println("Nombre de colons jaloux : " + jalousie);
+                    break;
+                case 3:
+                    // Quitter le programme
+                    quitter = true;
+                    System.out.println("Fin du programme");
+                    break;
+                default:
+                    System.out.println("Choix invalide. Essayez de nouveau.");
+            }
+        }
+        scanner.close();
+    }
+
+    // Fonction pour échanger les ressources de deux colons
+    private static void echangerRessources(Colonie colonie, String colon1, String colon2) {
+        int index1 = colonie.SearchColon(colon1);
+        int index2 = colonie.SearchColon(colon2);
+
+        if (index1 != -1 && index2 != -1) {
+            Colon c1 = colonie.getColonie().get(index1);
+            Colon c2 = colonie.getColonie().get(index2);
+
+            // Échanger les ressources
+            int temp = c1.getRessource();
+            c1.setRessource(c2.getRessource());
+            c2.setRessource(temp);
+
+            System.out.println("Les ressources des colons " + colon1 + " et " + colon2 + " ont été échangées.");
+        } else {
+            System.out.println("Un ou les deux colons n'ont pas été trouvés.");
+        }
+    }
+
+   
 }

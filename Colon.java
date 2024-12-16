@@ -11,7 +11,7 @@ public class Colon {
         this.ressource = 0;
         preferances = new ArrayList<Integer>();
     }
-
+    
     public ArrayList<Integer> getPreferances() {
         return preferances;
     }
