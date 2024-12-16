@@ -7,11 +7,27 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.FileWriter;
 
+
+/**
+ * Represents a colony of individuals on Mars.
+ *
+ * A Colonie manages a collection of Colon objects, maintains an incidence matrix for relationships,
+ * and provides functionalities for reading data from files, assigning resources, and calculating jealousy rate.
+ */
 public class Colonie {
+    // Collection of Colon objects representing the individuals in the colony
     private ArrayList<Colon> colonie;
+    // Solution object representing the resource allocation (optional)
     private Solution solution;
+    // Incidence matrix representing relationships between individuals (1: hate, 0: no hate)s
     private int[][] matriceIncidence;
 
+
+/**
+ * Constructs a Colonie object with a specified number of individuals.
+ *
+ * @param n The number of individuals in the colony.
+ */
     public Colonie(int n) {
         this.matriceIncidence = new int[n][n];
         //this.solution = new Solution();
@@ -21,6 +37,12 @@ public class Colonie {
         }
     }
 
+/**
+ * Constructs a Colonie object by reading data from a file.
+ *
+ * @param path The path to the file containing colony data.
+ * @throws IOException If an error occurs while reading the file.
+ */
     public Colonie(String path) {
         try{
             lireDepuisFichier(path);
@@ -30,6 +52,12 @@ public class Colonie {
         }
     }
 
+/**
+ * Reads colony data from a specified file.
+ *
+ * @param cheminFichier The path to the file.
+ * @throws IOException If an error occurs while reading the file.
+ */
     public void lireDepuisFichier(String cheminFichier) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(cheminFichier));
         String ligne;
@@ -71,6 +99,13 @@ public class Colonie {
         matriceIncidence = new int[colonie.size()][colonie.size()];
     }
 
+
+/**
+ * Saves the solution (resource allocation) to a file.
+ *
+ * @param path The path to the output file.
+ * @throws IOException If an error occurs while writing to the file.
+ */
     public void EnregistrerSolutionFile(String path){
         try (FileWriter writer = new FileWriter(path)) {
             String ligne;
@@ -82,8 +117,8 @@ public class Colonie {
             System.out.println("Une erreur s'est produite lors de l'écriture : " + e.getMessage());
         }
     }
-    
-    // Une fonction qui retourne l'index du clon rechercher par son nom dans la colonie
+
+    // Function to search for a Colon object by name
     public int SearchColon(String colon){
         //il faut verifier que le colon exist
         int i = -1;
@@ -95,7 +130,12 @@ public class Colonie {
         return i;
     }
 
-    // function qui rajoute une relation de hate entre 2 colons
+/**
+ * Defines a "hate" relationship between two individuals in the colony.
+ *
+ * @param ColonA The name of the first colonist.
+ * @param ColonB The name of the second colonist.
+ */
     public void DefineRelation(String ColonA, String ColonB) {
         // verifie l'existance des colons
         Colon C1 = this.colonie.get(SearchColon(ColonA)),
@@ -119,7 +159,11 @@ public class Colonie {
         }
     }
 
-    //Methode qui prend un estring avec le nom du colon puis la liste des preference separer par un espace
+/**
+ * Adds preferences for a colonist, specifying the order of desired resources.
+ *
+ * @param Str A string containing the colonist's name followed by preferred resources separated by spaces.
+ */
     public void AddPreferance(String Str){
         //verifier qu'on a N preferance DISTINCTE
         StringTokenizer tokenizer = new StringTokenizer(Str, " ");
@@ -162,7 +206,7 @@ public class Colonie {
         this.matriceIncidence = matriceIncidence;
     }
 
-    //fct qui fait l'algo d'attribution naive
+// Function to perform a naive resource allocation
     public void Affectation(){
         //initialisation d'une array de ressources
         ArrayList<Integer> resource = new ArrayList<>();
@@ -187,8 +231,12 @@ public class Colonie {
         }
     };
 
-    // 3 ou 4 algo d'affectation a appller la haut
 
+/**
+ * Calculates the jealousy rate of the colony based on resource allocation and relationships.
+ *
+ * @return The total number of "jealous" individuals.
+ */
    public int JalousyRateCalculator() {
     int tauxDeJalousie = 0;
 

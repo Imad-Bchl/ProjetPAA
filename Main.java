@@ -5,6 +5,11 @@ import java.util.Scanner;
 
 public class Main {
 
+/**
+ * Starts the program without a file input.
+ * Interactively prompts the user to create a colony, define relationships,
+ * and preferences, and calculates the jealousy rate.
+ */
     public static void MainWithoutFile(){
         Scanner sc = new Scanner(System.in), scanner = new Scanner(System.in);
         int nColon = 0, choix = 0, resInter, JalousieRate;
@@ -156,8 +161,14 @@ public class Main {
         }while (choix > 0 && choix < 5);
     }
 
-
-
+/**
+ * Starts the program with a file input.
+ * Reads colony data from the specified file and provides options for
+ * automatic resolution, saving solutions, and calculating jealousy.
+ *
+ * @param path The path to the input file containing colony data.
+ * @throws InputNonValideException If the provided path is invalid.
+ */
     public static void MainWithFile(String path){
         Colonie Mars = new Colonie(path);
         System.out.println(" \t\t ****** Bonjour Astraunote ***** \n Votre colonie est creer Avec success");
@@ -207,8 +218,12 @@ public class Main {
     }
 
 
-
-
+/**
+ * The main entry point of the application.
+ *
+ * @param args Command-line arguments. The first argument can be a file path.
+ * @throws InputNonValideException If the provided file path is invalid.
+ */
     public static void main(String[] args) {
         if(args.length == 0){
             MainWithoutFile();
