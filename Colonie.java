@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -21,9 +22,40 @@ public class Colonie {
         for (int i = 0; i < n; i++) {
             this.colonie.add(new Colon ( Character.toString((char) 65+i) ,i));
         }
+
     }
 
-
+    public static Colonie instancierColonie(int n){
+        return new Colonie(n);
+    }
+    public static class Relation {
+        private String colon1;
+        private String colon2;
+        public Relation(String colon1, String colon2){
+            this.colon1 = colon1;
+            this.colon2 = colon2;
+        }
+        public String getColon1(){
+            return colon1;
+        }
+        public String getColon2(){
+            return colon2;
+        }
+    }
+    public static class Preference {
+        private String colonName;
+        private StringTokenizer tokenizer;
+        public Preference(String colonName, StringTokenizer tokenizer){
+            this.colonName = colonName;
+            this.tokenizer = tokenizer;
+        }
+        public String getColonName(){
+            return this.colonName;
+        }
+        public StringTokenizer getTokenizer(){
+            return tokenizer;
+        }
+    }
     public void ajouterRelationsDeteste(ArrayList<String[]> relationsDeteste) {
         // Assurez-vous que la matrice d'incidence est vide avant d'ajouter de nouvelles relations
         for (int i = 0; i < matriceIncidence.length; i++) {
@@ -60,16 +92,19 @@ public class Colonie {
         }
         return -1; // Si le colon n'existe pas, retourner -1
     }
-    
 
 
-    public void lireFichier(File file) throws FileNotFoundException {
+
+    public static Colonie lireFichier(File file) throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
         boolean readingColons = false;
         boolean readingRessources = false;
         boolean readingDeteste = false;
         boolean readingPreferences = false;
-
+        List<Colon> listeColons = new ArrayList<Colon>();
+        List<Relation> listeRelations = new ArrayList<Relation>();
+        List<Preference> listePreferences = new ArrayList<Preference>();
+        int index = 0;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine().trim();
 
@@ -86,17 +121,19 @@ public class Colonie {
                 readingPreferences = false;
                 // Extraire et ajouter un colon
                 String colonName = line.substring(6, line.length() - 1).trim();
-                colonie.add(new Colon(colonName, colonie.size()));
+                listeColons.add(new Colon(colonName, index));
+                index++;
             } else if (line.startsWith("deteste")) {
                 readingColons = false;
                 readingRessources = false;
                 readingDeteste = true;
                 readingPreferences = false;
-                // Extraire et ajouter une relation de détestation
+                // Extraire et ajouter une relation
                 String[] parts = line.substring(8, line.length() - 1).split(",");
                 String colon1 = parts[0].trim();
                 String colon2 = parts[1].trim();
-                DefineRelation(colon1, colon2);
+                listeRelations.add(new Relation(colon1,colon2));
+                // DefineRelation(colon1, colon2);
             } else if (line.startsWith("preferences")) {
                 readingColons = false;
                 readingRessources = false;
@@ -106,13 +143,23 @@ public class Colonie {
                 StringTokenizer tokenizer = new StringTokenizer(line.substring(12).trim(), " ");
                 if (tokenizer.hasMoreTokens()) {
                     String colonName = tokenizer.nextToken();
-                    AddPreferance(colonName, tokenizer);
+                    listePreferences.add(new Preference(colonName, tokenizer));
+                    //AddPreferance(colonName, tokenizer);
                 }
             }
         }
-
-
+        Colonie nouvelleColonie = new Colonie(index);
+        for (Preference preference : listePreferences) {
+           nouvelleColonie.AddPreferance(preference.getColonName(),preference.getTokenizer());
+        }
+        for (Colon colon : listeColons) {
+            nouvelleColonie.getColonie().add(colon);
+        }
+        for (Relation relation : listeRelations) {
+            nouvelleColonie.DefineRelation(relation.getColon1(), relation.getColon2());
+        }
         scanner.close();
+        return nouvelleColonie;
     }
 
 

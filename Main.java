@@ -99,14 +99,13 @@ public class Main {
             if (file.exists()) {
                 // Créer la colonie à partir du fichier
                 try {
-                    Colonie colonie = new Colonie(3);  // 5 est un exemple, à adapter selon le fichier
-                    colonie.lireFichier(file);
+                    Colonie colonie = Colonie.lireFichier(file);
                     colonie.validerFichier(file.getAbsolutePath());
                     afficherMenu(colonie);
                 } catch (FileNotFoundException e) {
                     System.out.println("Le fichier spécifié n'existe pas.");
                 } catch (Exception e) {
-                     e.printStackTrace();
+                    e.printStackTrace();
                 }
             } else {
                 System.out.println("Le fichier " + args[0] + " est introuvable.");
@@ -114,7 +113,7 @@ public class Main {
         }
     }
 
-    // Fonction pour lancer le menu et interagir avec l'utilisateur
+    // Menu
     private static void afficherMenu(Colonie colonie) {
         Scanner scanner = new Scanner(System.in);
         boolean quitter = false;
@@ -126,7 +125,7 @@ public class Main {
             System.out.println("3) Fin");
             
             int choix = scanner.nextInt();
-            scanner.nextLine(); // Consommer le retour à la ligne
+            scanner.nextLine(); // Consommer le new line
 
             switch (choix) {
                 case 1:
