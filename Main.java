@@ -310,25 +310,3 @@ public class Main {
         }while (choix != 77);
     }
 
-
-/**
- * The main entry point of the application.
- *
- * @param args Command-line arguments. The first argument can be a file path.
- * @throws InputNonValideException If the provided file path is invalid.
- */
-    public static void main(String[] args) {
-        if(args.length == 0){
-            MainWithoutFile();
-        }
-        else{
-            if(args.length == 1){
-                MainWithFile(args[0]);
-            }else{
-                throw new InputNonValideException("Input Invalide: veuillez saisir un chemin valide vers le fichier");
-            }
-        }
-
-    }
-
-}
