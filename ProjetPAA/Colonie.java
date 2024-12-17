@@ -1,3 +1,5 @@
+package ProjetPAA;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.io.FileWriter;
-
 
 /**
  * Represents a colony of individuals on Mars.
@@ -44,9 +45,37 @@ public class Colonie {
 
     }
 
+    /**
+     * Constructs a Colonie object by reading data from a file.
+     *
+     * @param path The path to the file containing colony data.
+     * @throws IOException If an error occurs while reading the file.
+     */
+    public Colonie(String path) {
+        try{
+            lireFichier(new File(path));
+        }
+        catch (IOException e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void EnregistrerSolutionFile(String path){
+        try (FileWriter writer = new FileWriter(path)) {
+            String ligne;
+            for (int i = 1; i <= 10; i++) {
+                ligne = colonie.get(i).getNom() + ":" + colonie.get(i).getRessource() + "\n";
+                writer.write(ligne);
+            }
+        } catch (IOException e) {
+            System.out.println("Une erreur s'est produite lors de l'écriture : " + e.getMessage());
+        }
+    }
+
     public static Colonie instancierColonie(int n){
         return new Colonie(n);
     }
+
     public static class Relation {
         private String colon1;
         private String colon2;
@@ -61,6 +90,7 @@ public class Colonie {
             return colon2;
         }
     }
+
     public static class Preference {
         private String colonName;
         private StringTokenizer tokenizer;
@@ -75,6 +105,7 @@ public class Colonie {
             return tokenizer;
         }
     }
+
     public void ajouterRelationsDeteste(ArrayList<String[]> relationsDeteste) {
         // Assurez-vous que la matrice d'incidence est vide avant d'ajouter de nouvelles relations
         for (int i = 0; i < matriceIncidence.length; i++) {

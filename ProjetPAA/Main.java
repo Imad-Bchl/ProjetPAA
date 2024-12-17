@@ -1,16 +1,13 @@
+package ProjetPAA;
+
 import javax.imageio.spi.ImageReaderSpi;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-
-        if(args.length == 0){
-        //Test predifini :
-        PredefinedTest.test();
-
-
 /**
  * Starts the program without a file input.
  * Interactively prompts the user to create a colony, define relationships,
@@ -187,15 +184,15 @@ public class Main {
     }
 
 /**
- * Starts the program with a file input.
- * Reads colony data from the specified file and provides options for
- * automatic resolution, saving solutions, and calculating jealousy.
- *
- * @param path The path to the input file containing colony data.
- * @throws InputNonValideException If the provided path is invalid.
- */
-    public static void MainWithFile(String path) throws InputNonValideException{
-        Colonie Mars = new Colonie(path);
+* Starts the program with a file input.
+* Reads colony data from the specified file and provides options for
+* automatic resolution, saving solutions, and calculating jealousy.
+*
+* @param path The path to the input file containing colony data.
+* @throws InputNonValideException If the provided path is invalid.
+*/
+    public static void MainWithFile(String path) throws InputNonValideException, FileNotFoundException {
+        Colonie Mars = Colonie.lireFichier(new File(path));
         System.out.println(" \t\t ****** Bonjour Astraunote ***** \n Votre colonie est creer Avec success");
         Boolean resolu = false;
         Scanner sc = new Scanner(System.in);
@@ -203,7 +200,7 @@ public class Main {
         System.out.println("Que souhaitez vous faire ? , vous pouvez: \n" +
                 " \t 1) Resolution automatique du problème \n" +
                 " \t 2) Sauvgarder la solution dans un fichier\n" +
-                " \t 3) Voir le taux de jalousie" +
+                " \t 3) Voir le taux de jalousie \n" +
                 " \t 4) Fin.");
         do{
             try{
@@ -255,15 +252,20 @@ public class Main {
  * @throws InputNonValideException If the provided file path is invalid.
  */
     public static void main(String[] args) {
-        if(args.length == 0){
-            MainWithoutFile();
-        }
-        else{
-            if(args.length == 1){
-                MainWithFile(args[0]);
-            }else{
-                throw new InputNonValideException("Input Invalide: veuillez saisir un chemin valide vers le fichier");
+        try{
+            if(args.length == 0){
+                MainWithoutFile();
             }
+            else{
+                if(args.length == 1){
+                    MainWithFile(args[0]);
+                }else{
+                    throw new InputNonValideException("Input Invalide: veuillez saisir un chemin valide vers le fichier");
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Bye Astronaut ");
         }
 
     }
