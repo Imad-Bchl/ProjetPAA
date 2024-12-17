@@ -1,9 +1,15 @@
-package ProjetPAA;
-
+import javax.imageio.spi.ImageReaderSpi;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    public static void main(String[] args) {
+
+        if(args.length == 0){
+        //Test predifini :
+        PredefinedTest.test();
+
 
 /**
  * Starts the program without a file input.
@@ -177,7 +183,7 @@ public class Main {
                 default:
                     System.out.println("Bye Astronaut ");
             }
-        }while (choix > 0);
+        }while (choix > 0 && choix < 5);
     }
 
 /**
@@ -250,23 +256,16 @@ public class Main {
  */
     public static void main(String[] args) {
         if(args.length == 0){
-            try{
-                MainWithoutFile();
-            }catch(InputNonValideException e){
-                System.out.println(e.getMessage());
-            }
+            MainWithoutFile();
         }
         else{
-            try{
-                if(args.length == 1){
-                    MainWithFile(args[0]);
-                }else{
-                    throw new InputNonValideException("Input Invalide: veuillez saisir un chemin valide vers le fichier");
-                }
-            }catch (InputNonValideException e){
-                System.out.println(e.getMessage());
+            if(args.length == 1){
+                MainWithFile(args[0]);
+            }else{
+                throw new InputNonValideException("Input Invalide: veuillez saisir un chemin valide vers le fichier");
             }
         }
+
     }
 
 }
