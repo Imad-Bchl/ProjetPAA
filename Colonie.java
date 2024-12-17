@@ -3,18 +3,39 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.io.FileWriter;
 
+
+/**
+ * Represents a colony of individuals on Mars.
+ *
+ * A Colonie manages a collection of Colon objects, maintains an incidence matrix for relationships,
+ * and provides functionalities for reading data from files, assigning resources, and calculating jealousy rate.
+ */
 public class Colonie {
+    // Collection of Colon objects representing the individuals in the colony
     private ArrayList<Colon> colonie;
+    // Solution object representing the resource allocation (optional)
     private Solution solution;
+    // Incidence matrix representing relationships between individuals (1: hate, 0: no hate)s
     private int[][] matriceIncidence;
 
+
+/**
+ * Constructs a Colonie object with a specified number of individuals.
+ *
+ * @param n The number of individuals in the colony.
+ */
     public Colonie(int n) {
         this.matriceIncidence = new int[n][n];
         //this.solution = new Solution();
@@ -175,7 +196,12 @@ public class Colonie {
         return i;
     }
 
-    // function qui rajoute une relation de hate entre 2 colons
+/**
+ * Defines a "hate" relationship between two individuals in the colony.
+ *
+ * @param ColonA The name of the first colonist.
+ * @param ColonB The name of the second colonist.
+ */
     public void DefineRelation(String ColonA, String ColonB) {
         // Nettoyage des noms des colons
         ColonA = ColonA.trim().replaceAll("[^A-Za-z0-9]", "");
@@ -385,7 +411,7 @@ public class Colonie {
         this.matriceIncidence = matriceIncidence;
     }
 
-    //fct qui fait l'algo d'attribution naive
+// Function to perform a naive resource allocation
     public void Affectation(){
         //initialisation d'une array de ressources
         ArrayList<Integer> resource = new ArrayList<>();
@@ -410,9 +436,13 @@ public class Colonie {
         }
     };
 
-    // 3 ou 4 algo d'affectation a appller la haut
 
-    public int JalousyRateCalculator() {
+ /**
+ * Calculates the jealousy rate of the colony based on resource allocation and relationships.
+ *
+ * @return The total number of "jealous" individuals.
+ */
+   public int JalousyRateCalculator() {
         int tauxDeJalousie = 0;
     
         // Parcourir tous les colons
