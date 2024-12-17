@@ -1,3 +1,5 @@
+package ProjetPAA;
+
 public class PredefinedTest {
     public static void test() {
         Colonie Mars = new Colonie(5);

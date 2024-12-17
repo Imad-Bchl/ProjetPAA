@@ -1,4 +1,6 @@
-public class InputNonValideException extends RuntimeException {
+package ProjetPAA;
+
+public class InputNonValideException extends Exception {
 
     public InputNonValideException(String message) {
         super(message);

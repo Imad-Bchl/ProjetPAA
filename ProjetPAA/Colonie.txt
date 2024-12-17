@@ -1,0 +1,15 @@
+colon(imad).
+colon(ghilas).
+colon(badi).
+colon(imad2).
+ressource(R1).
+ressource(R2).
+ressource(R3).
+ressource(R4).
+deteste(imad,badi).
+deteste(imad,ghilas).
+deteste(imad2,ghilas).
+preferences(1,2,3,4).
+preferences(2,4,3,1).
+preferences(2,3,4,1).
+preferences(2,3,4,1).

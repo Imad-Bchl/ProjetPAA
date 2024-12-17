@@ -1,7 +1,12 @@
-import java.util.ArrayList;
+package ProjetPAA;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class Project {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Colonie Mars = new Colonie(5);
         for (int i = 0; i < 5; i++) {
             System.out.println(Mars.getColonie().get(i).getNom());
@@ -21,5 +26,12 @@ public class Project {
         Mars.AddPreferance(text);
         Colon o = Mars.getColonie().get(Mars.SearchColon("A"));
         System.out.println(o.getPreferances());
+
+        File file = new File("./ProjetPAA/Colonie.txt");
+        System.out.println("Working directory: " + System.getProperty("user.dir"));
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        System.out.println(file.getAbsolutePath());
+        Colonie venus = new Colonie("./ProjetPAA/Colonie.txt");
+        System.out.println(venus.getColonie());
     }
 }

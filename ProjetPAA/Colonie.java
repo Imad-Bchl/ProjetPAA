@@ -1,8 +1,8 @@
+package ProjetPAA;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.FileWriter;
@@ -64,6 +64,7 @@ public class Colonie {
 
         while ((ligne = reader.readLine()) != null) {
             ligne = ligne.trim();
+            System.out.println(ligne);
 
             if (ligne.startsWith("colon(")) {
                 // Ajouter un colon à la colonie
@@ -122,7 +123,7 @@ public class Colonie {
     public int SearchColon(String colon){
         //il faut verifier que le colon exist
         int i = -1;
-        for (Colon col : colonie) {
+        for (Colon col : this.colonie) {
             if (col.getNom().equals(colon)) { // Comparaison du nom
                 i = col.getIndex();
             }
@@ -213,13 +214,12 @@ public class Colonie {
         for (int i = 1; i <= this.colonie.size(); i++) {
             resource.add(i);
         }
-        System.out.println(resource);
+
 
         //Attribution du premier disponible
         for (Colon colon : this.colonie) {
             for (int j = 0; j < colon.getPreferances().size(); j++) {
                 for (int i = 0; i < resource.size(); i++) {
-                    System.out.println(colon.getNom() + " " + resource.get(i)+ " " + colon.getPreferances().get(j));
                     if ( resource.get(i) == colon.getPreferances().get(j)){
                         colon.setRessource(resource.get(i));
                         resource.remove(resource.get(i));
@@ -265,5 +265,4 @@ public class Colonie {
 
     return tauxDeJalousie;
 }
-
-    }
+}
